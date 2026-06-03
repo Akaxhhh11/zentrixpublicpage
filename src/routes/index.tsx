@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { ThemeProvider } from "@/components/zentrix/ThemeProvider";
 import { Nav } from "@/components/zentrix/Nav";
 import { Hero } from "@/components/zentrix/Hero";
 import { Problem } from "@/components/zentrix/Problem";
@@ -9,7 +10,6 @@ import { Results } from "@/components/zentrix/Results";
 import { Process } from "@/components/zentrix/Process";
 import { CaseStudies } from "@/components/zentrix/CaseStudies";
 import { Testimonials } from "@/components/zentrix/Testimonials";
-import { Insights } from "@/components/zentrix/Insights";
 import { FinalCTA } from "@/components/zentrix/FinalCTA";
 import { Footer } from "@/components/zentrix/Footer";
 
@@ -38,20 +38,21 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   return (
-    <main className="relative min-h-screen overflow-hidden bg-background text-foreground">
-      <Nav />
-      <Hero />
-      <Problem />
-      <Philosophy />
-      <Capabilities />
-      <Platform />
-      <Results />
-      <Process />
-      <CaseStudies />
-      <Testimonials />
-      <Insights />
-      <FinalCTA />
-      <Footer />
-    </main>
+    <ThemeProvider>
+      <main className="relative min-h-screen overflow-hidden bg-background text-foreground">
+        <Nav />
+        <Hero />
+        <Problem />
+        <Philosophy />
+        <Capabilities />
+        <Platform />
+        <Results />
+        <Process />
+        <CaseStudies />
+        <Testimonials />
+        <FinalCTA />
+        <Footer />
+      </main>
+    </ThemeProvider>
   );
 }
