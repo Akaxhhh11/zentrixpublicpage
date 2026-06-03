@@ -44,7 +44,7 @@ export function CaseStudies() {
               <span className="text-muted-foreground/80">into success.</span>
             </>
           }
-          description="A result-driven approach. A measurable impact."
+          subtitle="A result-driven approach. A measurable impact."
         />
 
         <motion.div
