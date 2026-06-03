@@ -28,9 +28,9 @@ export function Nav() {
       }`}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
-        <Link to="/" className="flex items-center gap-2.5">
-          <Logo className="h-8 w-8" />
-          <span className="text-[15px] font-semibold tracking-[0.18em] text-foreground">
+        <Link to="/" className="flex items-center gap-3">
+          <Logo className="h-12 w-12" />
+          <span className="text-[17px] font-semibold tracking-[0.2em] text-foreground">
             ZENTRIX
           </span>
         </Link>
