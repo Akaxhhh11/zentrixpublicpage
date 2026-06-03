@@ -76,12 +76,12 @@ export function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.6 }}
-            className="mt-12 flex items-center gap-6 text-[11px] uppercase tracking-[0.2em] text-muted-foreground/70"
+            className="mt-12 flex flex-wrap items-center gap-x-8 gap-y-3 text-[11px] uppercase tracking-[0.2em] text-muted-foreground/80"
           >
-            <span>Trusted by operators at</span>
-            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-white/40">
-              {["Lumen", "Northwind", "Aperture", "Vertex", "Halo"].map((b) => (
-                <span key={b} className="text-[13px] font-semibold tracking-[0.12em]">
+            <span>Built for modern operators</span>
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-foreground/55">
+              {["Strategy", "Performance", "Creative", "Analytics", "Systems"].map((b) => (
+                <span key={b} className="text-[12px] font-semibold tracking-[0.18em]">
                   {b.toUpperCase()}
                 </span>
               ))}
