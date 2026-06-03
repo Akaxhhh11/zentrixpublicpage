@@ -74,9 +74,9 @@ export function Platform() {
               <Panel
                 className="col-span-7"
                 icon={Activity}
-                label="Revenue Analytics"
-                value="$4.82M"
-                delta="+38.4%"
+                label="Growth Analytics"
+                value="+215%"
+                delta="Traffic"
               >
                 <div className="h-32">
                   <ResponsiveContainer>

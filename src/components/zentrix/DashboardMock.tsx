@@ -1,16 +1,5 @@
 import { motion } from "framer-motion";
-import { Area, AreaChart, ResponsiveContainer, Tooltip } from "recharts";
-import { ArrowUpRight, TrendingUp, Users, Zap } from "lucide-react";
-
-const data = Array.from({ length: 24 }, (_, i) => ({
-  x: i,
-  v: 40 + Math.sin(i / 2.4) * 18 + i * 2.4 + Math.random() * 6,
-}));
-
-const data2 = Array.from({ length: 24 }, (_, i) => ({
-  x: i,
-  v: 30 + Math.cos(i / 3) * 12 + i * 1.4,
-}));
+import { ArrowUpRight, TrendingUp, Users, Zap, Target, BarChart3 } from "lucide-react";
 
 export function DashboardMock() {
   return (
@@ -18,7 +7,7 @@ export function DashboardMock() {
       {/* Ambient glow */}
       <div className="absolute -inset-10 -z-10 rounded-full bg-[radial-gradient(circle,rgba(200,245,176,0.18),transparent_60%)] blur-2xl" />
 
-      {/* Main panel */}
+      {/* Main panel — Growth Performance */}
       <motion.div
         animate={{ y: [0, -8, 0] }}
         transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
@@ -27,12 +16,12 @@ export function DashboardMock() {
         <div className="flex items-center justify-between">
           <div>
             <p className="text-[10.5px] uppercase tracking-[0.18em] text-muted-foreground">
-              Revenue Performance
+              Growth Performance
             </p>
             <div className="mt-1.5 flex items-baseline gap-2">
-              <span className="text-2xl font-semibold text-white">$1.482M</span>
+              <span className="text-3xl font-semibold text-white">+248%</span>
               <span className="inline-flex items-center gap-1 text-[11px] font-medium text-highlight">
-                <ArrowUpRight className="h-3 w-3" /> 38.4%
+                <ArrowUpRight className="h-3 w-3" /> vs last quarter
               </span>
             </div>
           </div>
@@ -52,41 +41,34 @@ export function DashboardMock() {
           </div>
         </div>
 
-        <div className="mt-4 h-36">
-          <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={data} margin={{ top: 4, right: 0, left: 0, bottom: 0 }}>
-              <defs>
-                <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#C8F5B0" stopOpacity={0.55} />
-                  <stop offset="100%" stopColor="#C8F5B0" stopOpacity={0} />
-                </linearGradient>
-              </defs>
-              <Tooltip
-                cursor={{ stroke: "rgba(255,255,255,0.15)" }}
-                contentStyle={{
-                  background: "rgba(13,13,13,0.9)",
-                  border: "1px solid rgba(255,255,255,0.08)",
-                  borderRadius: 8,
-                  fontSize: 11,
-                }}
-                labelStyle={{ color: "#A1A1AA" }}
-              />
-              <Area
-                type="monotone"
-                dataKey="v"
-                stroke="#C8F5B0"
-                strokeWidth={1.6}
-                fill="url(#g1)"
-              />
-            </AreaChart>
-          </ResponsiveContainer>
+        <div className="mt-5 grid grid-cols-3 gap-3">
+          {[
+            { l: "Website Traffic", v: "+215%", i: BarChart3 },
+            { l: "Conversions", v: "+180%", i: Target },
+            { l: "Engagement", v: "+95%", i: TrendingUp },
+          ].map((s) => (
+            <div
+              key={s.l}
+              className="rounded-xl border border-white/5 bg-white/[0.02] p-3"
+            >
+              <div className="flex items-center gap-1.5 text-muted-foreground">
+                <s.i className="h-3 w-3" />
+                <p className="text-[9.5px] uppercase tracking-[0.14em]">
+                  {s.l}
+                </p>
+              </div>
+              <p className="mt-1.5 text-lg font-semibold text-gradient-accent">
+                {s.v}
+              </p>
+            </div>
+          ))}
         </div>
 
-        <div className="mt-3 grid grid-cols-3 gap-3 border-t border-white/5 pt-3">
+        <div className="mt-4 grid grid-cols-3 gap-3 border-t border-white/5 pt-4">
           {[
-            { l: "ROAS", v: "5.8x" },
-            { l: "CAC", v: "$184" },
-            { l: "LTV", v: "$2.4k" },
+            { l: "ROAS Boost", v: "+160%" },
+            { l: "Bounce Rate", v: "−42%" },
+            { l: "Repeat Visits", v: "3.6x" },
           ].map((s) => (
             <div key={s.l}>
               <p className="text-[9.5px] uppercase tracking-[0.16em] text-muted-foreground">
@@ -98,11 +80,11 @@ export function DashboardMock() {
         </div>
       </motion.div>
 
-      {/* Side card top */}
+      {/* Side card top — Audience */}
       <motion.div
         animate={{ y: [0, 6, 0] }}
         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-        className="absolute right-0 top-44 w-[240px] overflow-hidden rounded-2xl border border-white/10 bg-[#0d0d0d]/90 p-4 shadow-[0_30px_60px_-20px_rgba(0,0,0,0.8)] backdrop-blur-xl"
+        className="absolute right-0 top-56 w-[240px] overflow-hidden rounded-2xl border border-white/10 bg-[#0d0d0d]/90 p-4 shadow-[0_30px_60px_-20px_rgba(0,0,0,0.8)] backdrop-blur-xl"
       >
         <div className="flex items-center gap-2">
           <div className="grid h-7 w-7 place-items-center rounded-md bg-primary/15 text-primary">
@@ -110,33 +92,34 @@ export function DashboardMock() {
           </div>
           <div>
             <p className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
-              Customer Journey
+              Active Audience
             </p>
-            <p className="text-[13px] font-semibold text-white">14,820 active</p>
+            <p className="text-[13px] font-semibold text-white">14,820 reached</p>
           </div>
         </div>
-        <div className="mt-3 h-16">
-          <ResponsiveContainer>
-            <AreaChart data={data2}>
-              <defs>
-                <linearGradient id="g2" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#A7C4A0" stopOpacity={0.5} />
-                  <stop offset="100%" stopColor="#A7C4A0" stopOpacity={0} />
-                </linearGradient>
-              </defs>
-              <Area
-                type="monotone"
-                dataKey="v"
-                stroke="#A7C4A0"
-                strokeWidth={1.4}
-                fill="url(#g2)"
-              />
-            </AreaChart>
-          </ResponsiveContainer>
+        <div className="mt-3 space-y-2">
+          {[
+            { l: "Organic", v: 78 },
+            { l: "Paid Social", v: 62 },
+            { l: "Email", v: 44 },
+          ].map((r) => (
+            <div key={r.l}>
+              <div className="mb-1 flex justify-between text-[10.5px]">
+                <span className="text-white/80">{r.l}</span>
+                <span className="text-highlight">{r.v}%</span>
+              </div>
+              <div className="h-1 overflow-hidden rounded-full bg-white/5">
+                <div
+                  className="h-full rounded-full bg-gradient-to-r from-primary to-highlight"
+                  style={{ width: `${r.v}%` }}
+                />
+              </div>
+            </div>
+          ))}
         </div>
       </motion.div>
 
-      {/* Bottom card */}
+      {/* Bottom card — Campaign Health */}
       <motion.div
         animate={{ y: [0, -5, 0] }}
         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 1 }}
@@ -144,19 +127,19 @@ export function DashboardMock() {
       >
         <div className="mb-3 flex items-center justify-between">
           <p className="text-[10.5px] uppercase tracking-[0.18em] text-muted-foreground">
-            Opportunity Pipeline
+            Campaign Health
           </p>
           <span className="text-[10px] text-highlight">Live</span>
         </div>
         {[
-          { c: "Enterprise SaaS", v: 92, t: "$184k" },
-          { c: "Series B Fintech", v: 74, t: "$96k" },
-          { c: "DTC Health", v: 58, t: "$42k" },
+          { c: "SEO & Content", v: 92, t: "+215%" },
+          { c: "Social Campaigns", v: 84, t: "+180%" },
+          { c: "Email & Retargeting", v: 76, t: "+95%" },
         ].map((row) => (
           <div key={row.c} className="mb-2 last:mb-0">
             <div className="mb-1 flex justify-between text-[11px]">
               <span className="text-white/85">{row.c}</span>
-              <span className="text-muted-foreground">{row.t}</span>
+              <span className="text-highlight">{row.t}</span>
             </div>
             <div className="h-1 overflow-hidden rounded-full bg-white/5">
               <div

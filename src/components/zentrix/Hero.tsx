@@ -58,7 +58,7 @@ export function Hero() {
             className="mt-9 flex flex-wrap items-center gap-3"
           >
             <a
-              href="#contact"
+              href="mailto:contactzentrixms@gmail.com?subject=Book%20a%20Strategy%20Call%20with%20Zentrix&body=Hi%20Zentrix%20team%2C%0A%0AI%27d%20like%20to%20book%20a%20strategy%20call.%0A%0AName%3A%0ACompany%3A%0AWhat%20I%20need%20help%20with%3A%0A%0AThanks!"
               className="group relative inline-flex h-11 items-center gap-2 overflow-hidden rounded-full bg-gradient-to-b from-highlight to-primary px-5 text-[13.5px] font-semibold text-black shadow-[0_0_40px_-8px_var(--highlight)] transition-transform hover:-translate-y-[1px]"
             >
               Book Strategy Call

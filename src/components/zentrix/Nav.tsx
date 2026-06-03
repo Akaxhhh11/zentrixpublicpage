@@ -50,7 +50,7 @@ export function Nav() {
         <div className="flex items-center gap-3">
           <ThemeToggle />
           <a
-            href="#contact"
+            href="mailto:contactzentrixms@gmail.com?subject=Book%20a%20Strategy%20Call%20with%20Zentrix&body=Hi%20Zentrix%20team%2C%0A%0AI%27d%20like%20to%20book%20a%20strategy%20call.%0A%0AName%3A%0ACompany%3A%0AWhat%20I%20need%20help%20with%3A%0A%0AThanks!"
             className="group relative inline-flex h-9 items-center gap-2 overflow-hidden rounded-full border border-border bg-surface/60 px-4 text-[12.5px] font-medium text-foreground backdrop-blur-md transition-all hover:border-primary/50"
           >
             <span className="relative z-10">Book Strategy Call</span>
