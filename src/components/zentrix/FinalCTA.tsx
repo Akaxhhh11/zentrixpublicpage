@@ -59,17 +59,17 @@ export function FinalCTA() {
           className="mt-10 flex flex-wrap items-center justify-center gap-3"
         >
           <a
-            href="#"
+            href="mailto:contactzentrixms@gmail.com?subject=Book%20a%20Strategy%20Call%20with%20Zentrix&body=Hi%20Zentrix%20team%2C%0A%0AI%27d%20like%20to%20book%20a%20strategy%20call.%0A%0AName%3A%0ACompany%3A%0AWhat%20I%20need%20help%20with%3A%0A%0AThanks!"
             className="group relative inline-flex h-12 items-center gap-2 overflow-hidden rounded-full bg-gradient-to-b from-highlight to-primary px-6 text-[14px] font-semibold text-black shadow-[0_0_60px_-8px_var(--highlight)] transition-transform hover:-translate-y-[1px]"
           >
             Book Strategy Call
             <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
           </a>
           <a
-            href="#"
+            href="mailto:contactzentrixms@gmail.com"
             className="inline-flex h-12 items-center gap-2 rounded-full border border-white/15 bg-white/[0.04] px-6 text-[14px] font-medium text-white backdrop-blur-md transition-all hover:border-white/25 hover:bg-white/[0.07]"
           >
-            Start a Conversation
+            Email Us Directly
           </a>
         </motion.div>
       </div>
