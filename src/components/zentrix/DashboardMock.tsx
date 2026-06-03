@@ -1,5 +1,13 @@
 import { motion } from "framer-motion";
-import { Compass, Target, Sparkles, BarChart3, Workflow, CheckCircle2, ArrowUpRight } from "lucide-react";
+import {
+  Compass,
+  Target,
+  Sparkles,
+  BarChart3,
+  Workflow,
+  CheckCircle2,
+  ArrowUpRight,
+} from "lucide-react";
 
 const pillars = [
   { icon: Compass, label: "Strategy Architecture", tag: "Aligned" },
@@ -73,9 +81,7 @@ export function DashboardMock() {
         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
         className="absolute right-0 top-72 w-[230px] overflow-hidden rounded-2xl border border-white/10 bg-[#0d0d0d]/95 p-4 shadow-[0_30px_60px_-20px_rgba(0,0,0,0.8)] backdrop-blur-xl"
       >
-        <p className="text-[10px] uppercase tracking-[0.18em] text-white/60">
-          North Star
-        </p>
+        <p className="text-[10px] uppercase tracking-[0.18em] text-white/60">North Star</p>
         <p className="mt-1.5 text-[14.5px] font-semibold leading-snug text-white">
           Predictable, compounding revenue.
         </p>

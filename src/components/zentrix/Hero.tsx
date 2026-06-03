@@ -46,9 +46,8 @@ export function Hero() {
             transition={{ duration: 0.8, delay: 0.25 }}
             className="mt-6 max-w-xl text-[15.5px] leading-relaxed text-muted-foreground"
           >
-            Zentrix helps ambitious businesses build scalable growth systems through
-            strategic acquisition, creative intelligence, performance optimization, and
-            operational clarity.
+            Zentrix helps ambitious businesses build scalable growth systems through strategic
+            acquisition, creative intelligence, performance optimization, and operational clarity.
           </motion.p>
 
           <motion.div

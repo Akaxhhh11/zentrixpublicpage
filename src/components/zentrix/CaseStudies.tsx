@@ -1,12 +1,5 @@
 import { motion } from "framer-motion";
-import {
-  AlertCircle,
-  Lightbulb,
-  BarChart3,
-  Trophy,
-  ArrowUpRight,
-  Check,
-} from "lucide-react";
+import { AlertCircle, Lightbulb, BarChart3, Trophy, ArrowUpRight, Check } from "lucide-react";
 import { SectionHeader } from "./SectionHeader";
 
 const challenges = [
@@ -114,8 +107,8 @@ export function CaseStudies() {
                 </p>
               </div>
               <p className="mt-3 max-w-2xl text-[14.5px] leading-relaxed text-white/80">
-                With the right strategy and execution, we helped the brand not
-                just survive — but thrive in a competitive market.
+                With the right strategy and execution, we helped the brand not just survive — but
+                thrive in a competitive market.
               </p>
               <p className="mt-2 text-[14px] font-semibold text-white">
                 Your success is our mission.
@@ -159,15 +152,10 @@ function Block({
           {title}
         </h3>
       </div>
-      <p className="mt-4 text-[13.5px] leading-relaxed text-muted-foreground">
-        {intro}
-      </p>
+      <p className="mt-4 text-[13.5px] leading-relaxed text-muted-foreground">{intro}</p>
       <ul className="mt-5 space-y-2.5">
         {items.map((it) => (
-          <li
-            key={it}
-            className="flex items-start gap-2.5 text-[13.5px] text-white/85"
-          >
+          <li key={it} className="flex items-start gap-2.5 text-[13.5px] text-white/85">
             {variant === "check" ? (
               <Check className="mt-0.5 h-4 w-4 flex-shrink-0 text-highlight" />
             ) : (

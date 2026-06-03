@@ -58,9 +58,7 @@ export function Testimonials() {
               className="relative overflow-hidden rounded-2xl border border-white/[0.07] bg-white/[0.025] p-6 backdrop-blur-xl"
             >
               <div className="absolute -right-16 -top-16 h-40 w-40 rounded-full bg-primary/10 blur-3xl" />
-              <p className="relative text-[14px] leading-relaxed text-white/85">
-                "{t.quote}"
-              </p>
+              <p className="relative text-[14px] leading-relaxed text-white/85">"{t.quote}"</p>
               <div className="relative mt-6 flex items-center gap-3">
                 <div className="grid h-9 w-9 place-items-center rounded-full border border-white/10 bg-gradient-to-br from-primary/30 to-highlight/20 text-[11.5px] font-semibold text-white">
                   {t.initials}

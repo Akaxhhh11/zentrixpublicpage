@@ -9,7 +9,8 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<Theme>("dark");
 
   useEffect(() => {
-    const stored = (typeof window !== "undefined" && localStorage.getItem("zentrix-theme")) as Theme | null;
+    const stored = (typeof window !== "undefined" &&
+      localStorage.getItem("zentrix-theme")) as Theme | null;
     if (stored === "light" || stored === "dark") setTheme(stored);
   }, []);
 
@@ -17,11 +18,17 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     const root = document.documentElement;
     root.classList.toggle("light", theme === "light");
     root.classList.toggle("dark", theme === "dark");
-    try { localStorage.setItem("zentrix-theme", theme); } catch {}
+    try {
+      localStorage.setItem("zentrix-theme", theme);
+    } catch (error) {
+      console.warn("Failed to persist zentrix theme preference.", error);
+    }
   }, [theme]);
 
   return (
-    <ThemeCtx.Provider value={{ theme, toggle: () => setTheme((t) => (t === "dark" ? "light" : "dark")) }}>
+    <ThemeCtx.Provider
+      value={{ theme, toggle: () => setTheme((t) => (t === "dark" ? "light" : "dark")) }}
+    >
       {children}
     </ThemeCtx.Provider>
   );

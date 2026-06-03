@@ -1,13 +1,5 @@
 import { motion } from "framer-motion";
-import {
-  Area,
-  AreaChart,
-  Bar,
-  BarChart,
-  Line,
-  LineChart,
-  ResponsiveContainer,
-} from "recharts";
+import { Area, AreaChart, Bar, BarChart, Line, LineChart, ResponsiveContainer } from "recharts";
 import { SectionHeader } from "./SectionHeader";
 import { Activity, BarChart3, GitBranch, Layers3, Radar } from "lucide-react";
 

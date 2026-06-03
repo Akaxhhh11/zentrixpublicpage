@@ -49,7 +49,7 @@ function Index() {
         <Results />
         <Process />
         <CaseStudies />
-        
+
         <FinalCTA />
         <Footer />
       </main>

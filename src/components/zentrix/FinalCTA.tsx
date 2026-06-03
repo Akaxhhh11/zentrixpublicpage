@@ -47,8 +47,8 @@ export function FinalCTA() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="mx-auto mt-6 max-w-xl text-[15.5px] leading-relaxed text-muted-foreground"
         >
-          Create clarity, unlock opportunities, and scale with confidence. Zentrix becomes
-          the operating layer for your next phase of growth.
+          Create clarity, unlock opportunities, and scale with confidence. Zentrix becomes the
+          operating layer for your next phase of growth.
         </motion.p>
 
         <motion.div

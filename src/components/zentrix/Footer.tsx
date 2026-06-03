@@ -5,7 +5,12 @@ import { Logo } from "./Logo";
 const columns = [
   {
     title: "Solutions",
-    links: ["Strategy Architecture", "Performance Acquisition", "Creative Intelligence", "Operational Visibility"],
+    links: [
+      "Strategy Architecture",
+      "Performance Acquisition",
+      "Creative Intelligence",
+      "Operational Visibility",
+    ],
   },
   {
     title: "Company",
@@ -26,8 +31,8 @@ export function Footer() {
               </span>
             </Link>
             <p className="mt-5 max-w-sm text-[13.5px] leading-relaxed text-muted-foreground">
-              Zentrix helps businesses build intelligent growth systems through strategy,
-              creative excellence, performance optimization, and operational visibility.
+              Zentrix helps businesses build intelligent growth systems through strategy, creative
+              excellence, performance optimization, and operational visibility.
             </p>
           </div>
 
@@ -83,11 +88,19 @@ export function Footer() {
         </div>
 
         <div className="mt-14 flex flex-col items-start justify-between gap-4 border-t border-border pt-6 text-[11.5px] text-muted-foreground sm:flex-row sm:items-center">
-          <p>© {new Date().getFullYear()} Zentrix. Growth infrastructure for ambitious companies.</p>
+          <p>
+            © {new Date().getFullYear()} Zentrix. Growth infrastructure for ambitious companies.
+          </p>
           <div className="flex items-center gap-5">
-            <a href="#" className="hover:text-foreground">Privacy</a>
-            <a href="#" className="hover:text-foreground">Terms</a>
-            <a href="#" className="hover:text-foreground">Security</a>
+            <a href="#" className="hover:text-foreground">
+              Privacy
+            </a>
+            <a href="#" className="hover:text-foreground">
+              Terms
+            </a>
+            <a href="#" className="hover:text-foreground">
+              Security
+            </a>
           </div>
         </div>
       </div>

@@ -23,13 +23,12 @@ export function Philosophy() {
             Philosophy
           </span>
           <h2 className="mt-5 text-[38px] font-semibold leading-[1.04] tracking-[-0.035em] text-white sm:text-[52px]">
-            Growth should operate like{" "}
-            <span className="text-gradient-accent">a system.</span>
+            Growth should operate like <span className="text-gradient-accent">a system.</span>
           </h2>
           <p className="mt-6 max-w-md text-[15.5px] leading-relaxed text-muted-foreground">
             We replace one-off campaigns with connected infrastructure — strategy, channels,
-            creative, and analytics moving as one continuous engine. Every signal feeds the
-            next decision.
+            creative, and analytics moving as one continuous engine. Every signal feeds the next
+            decision.
           </p>
           <div className="mt-8 space-y-3">
             {[

@@ -8,15 +8,7 @@ const stats = [
   { value: 99, suffix: "%", label: "Visibility across growth activities" },
 ];
 
-function Counter({
-  to,
-  suffix,
-  decimals = 0,
-}: {
-  to: number;
-  suffix: string;
-  decimals?: number;
-}) {
+function Counter({ to, suffix, decimals = 0 }: { to: number; suffix: string; decimals?: number }) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "-50px" });
   const [val, setVal] = useState(0);
