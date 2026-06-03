@@ -19,9 +19,9 @@ export function Footer() {
       <div className="mx-auto max-w-7xl px-6">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
           <div className="lg:col-span-5">
-            <Link to="/" className="flex items-center gap-2.5">
-              <Logo className="h-8 w-8" />
-              <span className="text-[15px] font-semibold tracking-[0.18em] text-foreground">
+            <Link to="/" className="flex items-center gap-3">
+              <Logo className="h-12 w-12" />
+              <span className="text-[17px] font-semibold tracking-[0.2em] text-foreground">
                 ZENTRIX
               </span>
             </Link>
