@@ -9,7 +9,7 @@ import { Platform } from "@/components/zentrix/Platform";
 import { Results } from "@/components/zentrix/Results";
 import { Process } from "@/components/zentrix/Process";
 import { CaseStudies } from "@/components/zentrix/CaseStudies";
-import { Testimonials } from "@/components/zentrix/Testimonials";
+
 import { FinalCTA } from "@/components/zentrix/FinalCTA";
 import { Footer } from "@/components/zentrix/Footer";
 
