@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 import {
   Compass,
   Target,
@@ -10,129 +10,322 @@ import {
 } from "lucide-react";
 
 const pillars = [
-  { icon: Compass, label: "Strategy Architecture", tag: "Aligned" },
-  { icon: Target, label: "Performance Acquisition", tag: "Scaling" },
-  { icon: Sparkles, label: "Creative Intelligence", tag: "Compounding" },
-  { icon: BarChart3, label: "Analytics & Insight", tag: "Live" },
-  { icon: Workflow, label: "Operational Systems", tag: "Synced" },
+  { icon: Compass,  label: "Strategy Architecture",  tag: "Aligned"     },
+  { icon: Target,   label: "Performance Acquisition", tag: "Scaling"     },
+  { icon: Sparkles, label: "Creative Intelligence",   tag: "Compounding" },
+  { icon: BarChart3,label: "Analytics & Insight",     tag: "Live"        },
+  { icon: Workflow, label: "Operational Systems",     tag: "Synced"      },
 ];
 
-export function DashboardMock() {
-  return (
-    <div className="relative mx-auto aspect-[5/4.6] w-full max-w-[640px]">
-      {/* Ambient glow */}
-      <div className="absolute -inset-10 -z-10 rounded-full bg-[radial-gradient(circle,rgba(200,245,176,0.18),transparent_60%)] blur-2xl" />
+// ─── tiny keyframe injector (runs once) ───────────────────────────────────────
+const STYLE_ID = "zx-anim-styles";
+function injectStyles() {
+  if (document.getElementById(STYLE_ID)) return;
+  const el = document.createElement("style");
+  el.id = STYLE_ID;
+  el.textContent = `
+    @keyframes zxMainDrop {
+      0%   { opacity:0; transform:translateY(-28px); }
+      100% { opacity:1; transform:translateY(0);     }
+    }
+    @keyframes zxPillarIn {
+      0%   { opacity:0; transform:translateX(-14px); }
+      100% { opacity:1; transform:translateX(0);     }
+    }
+    @keyframes zxPing {
+      0%,100% { transform:scale(1);   opacity:.75; }
+      50%      { transform:scale(2.3); opacity:0;   }
+    }
+  `;
+  document.head.appendChild(el);
+}
 
-      {/* Main panel — Growth System */}
-      <motion.div
-        animate={{ y: [0, -8, 0] }}
-        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute left-0 right-8 top-0 overflow-hidden rounded-2xl border border-white/10 bg-[#0d0d0d]/90 p-6 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.7)] backdrop-blur-xl"
+// ─── sub-card data ─────────────────────────────────────────────────────────────
+const subCards = [
+  {
+    id: "northstar",
+    eyebrow: "North Star",
+    content: (
+      <>
+        <p style={{ fontFamily:"'Syne',sans-serif", fontSize:13, fontWeight:700, color:"#f0f0ee", lineHeight:1.3, margin:"0 0 8px" }}>
+          Predictable, compounding revenue.
+        </p>
+        <div style={{ display:"flex", alignItems:"center", gap:5, fontSize:10, color:"#a8f075" }}>
+          <ArrowUpRight size={11} color="#a8f075" />
+          Quarter-over-quarter clarity
+        </div>
+      </>
+    ),
+  },
+  {
+    id: "cadence",
+    eyebrow: "Operating Cadence",
+    extra: <span style={{ fontSize:9, color:"#a8f075" }}>Weekly</span>,
+    content: (
+      <div style={{ display:"flex", flexDirection:"column", gap:5, marginTop:4 }}>
+        {[["Strategy review","Mon"],["Performance pulse","Wed"],["Creative ship","Fri"]].map(([l,t]) => (
+          <div key={l} style={{ display:"flex", justifyContent:"space-between", fontSize:10.5 }}>
+            <span style={{ color:"rgba(255,255,255,.8)" }}>{l}</span>
+            <span style={{ background:"rgba(255,255,255,.04)", border:"1px solid rgba(255,255,255,.07)", borderRadius:4, padding:"1px 5px", fontSize:9, color:"rgba(255,255,255,.45)" }}>{t}</span>
+          </div>
+        ))}
+      </div>
+    ),
+  },
+  {
+    id: "compound",
+    eyebrow: "Built to",
+    content: (
+      <>
+        <div style={{ display:"flex", alignItems:"center", gap:8, marginTop:6 }}>
+          <div style={{ width:26, height:26, borderRadius:"50%", background:"rgba(126,217,87,.12)", display:"grid", placeItems:"center", flexShrink:0 }}>
+            <Sparkles size={12} color="#a8f075" />
+          </div>
+          <div>
+            <p style={{ fontSize:9, color:"rgba(255,255,255,.3)", margin:0 }}>Built to</p>
+            <p style={{ fontSize:12, fontWeight:700, color:"#f0f0ee", margin:0 }}>Compound</p>
+          </div>
+        </div>
+        <p style={{ fontSize:10, color:"rgba(240,240,238,.38)", marginTop:8, lineHeight:1.5 }}>
+          Every system reinforces the next.
+        </p>
+      </>
+    ),
+  },
+];
+
+// ─── animation phases ──────────────────────────────────────────────────────────
+// "hidden" → "stacked" → "bounce" → "spread"
+const PHASE_HIDDEN  = "hidden";
+const PHASE_STACKED = "stacked";
+const PHASE_BOUNCE  = "bounce";
+const PHASE_SPREAD  = "spread";
+
+function getCardStyle(index, phase) {
+  const base = {
+    position: "absolute",
+    width: "calc(33.33% - 7px)",
+    background: "rgba(16,22,16,0.98)",
+    border: "1px solid rgba(255,255,255,0.08)",
+    borderRadius: 16,
+    padding: "14px 13px",
+    transformOrigin: "bottom center",
+    willChange: "transform, opacity, left",
+    boxSizing: "border-box",
+  };
+
+  // stacked positions (layered on top of each other, left-aligned)
+  const stackedProps = [
+    { opacity:1, transform:"translateY(0px)   scale(1.00) rotateZ(0deg)",   left:0,    zIndex:3, transition:"opacity .4s, transform .5s cubic-bezier(.22,1,.36,1)" },
+    { opacity:1, transform:"translateY(7px)   scale(0.97) rotateZ(1.5deg)", left:6,    zIndex:2, transition:"opacity .4s .06s, transform .5s .06s cubic-bezier(.22,1,.36,1)" },
+    { opacity:1, transform:"translateY(14px)  scale(0.94) rotateZ(3deg)",   left:12,   zIndex:1, transition:"opacity .4s .12s, transform .5s .12s cubic-bezier(.22,1,.36,1)" },
+  ];
+
+  // bounce: lift front card
+  const bounceProps = [
+    { ...stackedProps[0], transform:"translateY(-7px) scale(1.02) rotateZ(0deg)", transition:"transform .25s cubic-bezier(.34,1.56,.64,1)" },
+    stackedProps[1],
+    stackedProps[2],
+  ];
+
+  // spread: side-by-side
+  const spreadLeft = ["0", "calc(33.33% + 3.5px)", "calc(66.66% + 7px)"];
+  const spreadProps = [
+    { opacity:1, transform:"translateY(0) scale(1) rotateZ(0deg)", left:spreadLeft[0], zIndex:3, transition:"left .55s cubic-bezier(.22,1,.36,1), transform .55s cubic-bezier(.22,1,.36,1)" },
+    { opacity:1, transform:"translateY(0) scale(1) rotateZ(0deg)", left:spreadLeft[1], zIndex:2, transition:"left .55s .07s cubic-bezier(.22,1,.36,1), transform .55s .07s cubic-bezier(.22,1,.36,1)" },
+    { opacity:1, transform:"translateY(0) scale(1) rotateZ(0deg)", left:spreadLeft[2], zIndex:1, transition:"left .55s .14s cubic-bezier(.22,1,.36,1), transform .55s .14s cubic-bezier(.22,1,.36,1)" },
+  ];
+
+  const hidden = { opacity:0, transform:"translateY(14px) scale(0.94) rotateZ(3deg)", left:12, zIndex:1, transition:"none" };
+
+  const phaseMap = { hidden: hidden, stacked: stackedProps[index], bounce: bounceProps[index], spread: spreadProps[index] };
+  const p = phaseMap[phase] || hidden;
+
+  return { ...base, opacity: p.opacity, transform: p.transform, left: p.left, zIndex: p.zIndex, transition: p.transition };
+}
+
+// ─── component ────────────────────────────────────────────────────────────────
+export function DashboardMock() {
+  const [mainVisible,   setMainVisible]   = useState(false);
+  const [pillarPhase,   setPillarPhase]   = useState(-1); // index up to which pillars are visible
+  const [cardPhase,     setCardPhase]     = useState(PHASE_HIDDEN);
+  const [hovered,       setHovered]       = useState(null); // card id being hovered
+  const [zoneExpanded,  setZoneExpanded]  = useState(false);
+  const [showHint,      setShowHint]      = useState(false);
+  const timers = useRef([]);
+
+  function clearTimers() { timers.current.forEach(clearTimeout); timers.current = []; }
+  function after(ms, fn) { timers.current.push(setTimeout(fn, ms)); }
+
+  function runSequence() {
+    clearTimers();
+    setMainVisible(false);
+    setPillarPhase(-1);
+    setCardPhase(PHASE_HIDDEN);
+    setZoneExpanded(false);
+    setShowHint(false);
+
+    // 1. main card drops
+    after(60, () => setMainVisible(true));
+
+    // 2. pillars stagger in
+    pillars.forEach((_, i) => {
+      after(680 + i * 85, () => setPillarPhase(i));
+    });
+
+    // 3. cards appear stacked
+    after(1380, () => { setCardPhase(PHASE_STACKED); setShowHint(true); });
+
+    // 4. bounce
+    after(1860, () => setCardPhase(PHASE_BOUNCE));
+    after(2110, () => setCardPhase(PHASE_STACKED));
+
+    // 5. explode to spread
+    after(2360, () => {
+      setCardPhase(PHASE_SPREAD);
+      setZoneExpanded(true);
+      setShowHint(false);
+    });
+  }
+
+  useEffect(() => {
+    injectStyles();
+    runSequence();
+    return clearTimers;
+  }, []);
+
+  // ── shared card hover style ──────────────────────────────────────────────────
+  function cardHoverStyle(id) {
+    return hovered === id && cardPhase === PHASE_SPREAD
+      ? { borderColor:"rgba(126,217,87,0.45)", boxShadow:"0 0 0 1px rgba(126,217,87,0.14), 0 0 24px rgba(126,217,87,0.1)" }
+      : {};
+  }
+
+  return (
+    <div style={{ position:"relative", width:"100%", maxWidth:560, fontFamily:"'DM Sans',sans-serif" }}>
+
+      {/* ambient glow */}
+      <div style={{ position:"absolute", inset:-40, zIndex:0, borderRadius:"50%", background:"radial-gradient(circle, rgba(200,245,176,0.1), transparent 60%)", filter:"blur(20px)", pointerEvents:"none" }} />
+
+      {/* ── MAIN CARD ── */}
+      <div
+        style={{
+          background:"rgba(16,22,16,0.98)",
+          border:"1px solid rgba(255,255,255,0.08)",
+          borderRadius:18,
+          padding:"22px 20px 20px",
+          position:"relative", zIndex:10,
+          opacity: mainVisible ? 1 : 0,
+          transform: mainVisible ? "translateY(0)" : "translateY(-28px)",
+          animation: mainVisible ? "zxMainDrop .65s cubic-bezier(.22,1,.36,1) forwards" : "none",
+          transition:"border-color .3s, box-shadow .3s",
+          boxSizing:"border-box",
+        }}
       >
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-highlight opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-highlight" />
+        {/* header */}
+        <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+          <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+            {/* pulse dot */}
+            <span style={{ position:"relative", width:8, height:8, flexShrink:0, display:"inline-block" }}>
+              <span style={{ position:"absolute", inset:0, borderRadius:"50%", background:"#7ed957", animation:"zxPing 1.8s ease-out infinite" }} />
+              <span style={{ position:"absolute", inset:0, borderRadius:"50%", background:"#7ed957" }} />
             </span>
-            <p className="text-[10.5px] uppercase tracking-[0.22em] text-white/70">
+            <p style={{ fontSize:10, textTransform:"uppercase", letterSpacing:".2em", color:"rgba(255,255,255,.55)", margin:0 }}>
               Growth System · Online
             </p>
           </div>
-          <span className="rounded-md bg-white/10 px-2 py-1 text-[10px] font-medium text-white">
-            v3.2
-          </span>
+          <span style={{ background:"rgba(255,255,255,.08)", borderRadius:6, padding:"3px 9px", fontSize:10, color:"rgba(255,255,255,.65)" }}>v3.2</span>
         </div>
 
-        <h3 className="mt-5 text-[22px] font-semibold leading-tight tracking-[-0.02em] text-white">
+        {/* title */}
+        <h3 style={{ fontFamily:"'Syne',sans-serif", fontSize:19, fontWeight:700, color:"#f0f0ee", margin:"16px 0 4px", letterSpacing:"-.02em", lineHeight:1.25 }}>
           Five pillars. One operating system.
         </h3>
-        <p className="mt-1.5 text-[12.5px] leading-relaxed text-white/65">
+        <p style={{ fontSize:12, color:"rgba(240,240,238,.48)", lineHeight:1.55, margin:0 }}>
           Every layer of growth — engineered to compound, not collide.
         </p>
 
-        <div className="mt-5 space-y-2">
+        {/* pillars */}
+        <div style={{ marginTop:16, display:"flex", flexDirection:"column", gap:6 }}>
           {pillars.map((p, i) => (
-            <motion.div
+            <div
               key={p.label}
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.15 + i * 0.07 }}
-              className="flex items-center justify-between rounded-xl border border-white/[0.07] bg-white/[0.03] px-3.5 py-2.5"
+              style={{
+                display:"flex", alignItems:"center", justifyContent:"space-between",
+                background:"rgba(255,255,255,.025)",
+                border:"1px solid rgba(255,255,255,.06)",
+                borderRadius:11, padding:"9px 13px",
+                opacity: pillarPhase >= i ? 1 : 0,
+                transform: pillarPhase >= i ? "translateX(0)" : "translateX(-14px)",
+                animation: pillarPhase >= i ? "zxPillarIn .42s ease forwards" : "none",
+                transition:"border-color .25s, background .25s",
+                cursor:"default",
+              }}
             >
-              <div className="flex items-center gap-2.5">
-                <div className="grid h-7 w-7 place-items-center rounded-md border border-primary/20 bg-primary/10 text-primary">
-                  <p.icon className="h-3.5 w-3.5" />
+              <div style={{ display:"flex", alignItems:"center", gap:9 }}>
+                <div style={{ width:27, height:27, background:"rgba(126,217,87,.1)", border:"1px solid rgba(126,217,87,.2)", borderRadius:8, display:"grid", placeItems:"center", flexShrink:0 }}>
+                  <p.icon size={13} color="#7ed957" strokeWidth={2} />
                 </div>
-                <span className="text-[12.5px] font-medium text-white/90">{p.label}</span>
+                <span style={{ fontSize:12, fontWeight:500, color:"rgba(255,255,255,.88)" }}>{p.label}</span>
               </div>
-              <span className="inline-flex items-center gap-1 text-[10.5px] font-medium text-highlight">
-                <CheckCircle2 className="h-3 w-3" />
+              <span style={{ display:"flex", alignItems:"center", gap:4, fontSize:10, fontWeight:500, color:"#a8f075" }}>
+                <CheckCircle2 size={11} color="#a8f075" strokeWidth={2.5} />
                 {p.tag}
-              </span>
-            </motion.div>
-          ))}
-        </div>
-      </motion.div>
-
-      {/* Floating badge — North Star */}
-      <motion.div
-        animate={{ y: [0, 6, 0] }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-        className="absolute right-0 top-72 w-[230px] overflow-hidden rounded-2xl border border-white/10 bg-[#0d0d0d]/95 p-4 shadow-[0_30px_60px_-20px_rgba(0,0,0,0.8)] backdrop-blur-xl"
-      >
-        <p className="text-[10px] uppercase tracking-[0.18em] text-white/60">North Star</p>
-        <p className="mt-1.5 text-[14.5px] font-semibold leading-snug text-white">
-          Predictable, compounding revenue.
-        </p>
-        <div className="mt-3 flex items-center gap-2 text-[11px] text-highlight">
-          <ArrowUpRight className="h-3.5 w-3.5" />
-          Quarter-over-quarter clarity
-        </div>
-      </motion.div>
-
-      {/* Bottom card — Live signals */}
-      <motion.div
-        animate={{ y: [0, -5, 0] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-        className="absolute bottom-0 left-6 w-[300px] overflow-hidden rounded-2xl border border-white/10 bg-[#0d0d0d]/95 p-4 shadow-[0_30px_60px_-20px_rgba(0,0,0,0.8)] backdrop-blur-xl"
-      >
-        <div className="mb-3 flex items-center justify-between">
-          <p className="text-[10.5px] uppercase tracking-[0.18em] text-white/70">
-            Operating Cadence
-          </p>
-          <span className="text-[10px] text-highlight">Weekly</span>
-        </div>
-        <div className="space-y-2.5">
-          {[
-            { l: "Strategy review", t: "Mon" },
-            { l: "Performance pulse", t: "Wed" },
-            { l: "Creative ship", t: "Fri" },
-          ].map((row) => (
-            <div key={row.l} className="flex items-center justify-between text-[12px]">
-              <span className="text-white/85">{row.l}</span>
-              <span className="rounded-md border border-white/10 bg-white/[0.04] px-2 py-0.5 text-[10.5px] text-white/70">
-                {row.t}
               </span>
             </div>
           ))}
         </div>
-      </motion.div>
+      </div>
 
-      {/* Floating mini-badge */}
-      <motion.div
-        animate={{ y: [0, -10, 0] }}
-        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 0.2 }}
-        className="absolute right-10 bottom-20 flex items-center gap-2 rounded-full border border-white/10 bg-[#0d0d0d]/95 px-3 py-2 backdrop-blur-xl"
+      {/* ── STACKED / SPREAD ZONE ── */}
+      <div
+        style={{
+          position:"relative",
+          marginTop:12,
+          height: zoneExpanded ? 130 : 90,
+          transition:"height .6s cubic-bezier(.22,1,.36,1)",
+        }}
       >
-        <div className="grid h-7 w-7 place-items-center rounded-full bg-highlight/15">
-          <Sparkles className="h-3.5 w-3.5 text-highlight" />
-        </div>
-        <div>
-          <p className="text-[10px] text-white/60">Built to</p>
-          <p className="text-[12px] font-semibold text-white">Compound</p>
-        </div>
-      </motion.div>
+        {subCards.map((card, i) => (
+          <div
+            key={card.id}
+            style={{
+              ...getCardStyle(i, cardPhase),
+              ...(cardPhase === PHASE_SPREAD ? cardHoverStyle(card.id) : {}),
+              transition: getCardStyle(i, cardPhase).transition + ", border-color .3s, box-shadow .3s",
+            }}
+            onMouseEnter={() => setHovered(card.id)}
+            onMouseLeave={() => setHovered(null)}
+          >
+            <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:6 }}>
+              <p style={{ fontSize:9, textTransform:"uppercase", letterSpacing:".18em", color:"rgba(240,240,238,.32)", margin:0 }}>
+                {card.eyebrow}
+              </p>
+              {card.extra || null}
+            </div>
+            {card.content}
+          </div>
+        ))}
+
+        {/* stack depth dots */}
+        {showHint && (
+          <div style={{ position:"absolute", bottom:-20, left:0, right:0, display:"flex", justifyContent:"center", gap:5 }}>
+            {[0,1,2].map(i => (
+              <div key={i} style={{ width:5, height:5, borderRadius:"50%", background: i === 0 ? "#a8f075" : "rgba(126,217,87,.3)" }} />
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* replay */}
+      <div style={{ display:"flex", justifyContent:"center", marginTop:34 }}>
+        <button
+          onClick={runSequence}
+          style={{ background:"rgba(126,217,87,.08)", border:"1px solid rgba(126,217,87,.22)", borderRadius:100, padding:"7px 18px", color:"#a8f075", fontSize:11, letterSpacing:".08em", cursor:"pointer", fontFamily:"'DM Sans',sans-serif", display:"flex", alignItems:"center", gap:6 }}
+        >
+          ↺ Replay
+        </button>
+      </div>
     </div>
   );
 }
