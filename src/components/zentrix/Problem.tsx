@@ -1,28 +1,40 @@
 import { motion } from "framer-motion";
-import { Network, Layers, LineChart } from "lucide-react";
+import { useEffect, useState } from "react";
 import { SectionHeader } from "./SectionHeader";
 
-const items = [
-  {
-    icon: Network,
-    title: "Disconnected Data",
-    desc: "Insights scattered across platforms create blind spots and slow every decision your team makes.",
-  },
-  {
-    icon: Layers,
-    title: "Scattered Execution",
-    desc: "Channels, creative, and operations move on independent rhythms — momentum leaks at every handoff.",
-  },
-  {
-    icon: LineChart,
-    title: "Unpredictable Growth",
-    desc: "Without an underlying system, performance becomes seasonal — not compounding.",
-  },
-];
+const fullText = "Most businesses don't need more marketing. They need more clarity.";
 
 export function Problem() {
+  const [displayedText, setDisplayedText] = useState("");
+  const [isTyping, setIsTyping] = useState(true);
+
+  useEffect(() => {
+    let charIndex = 0;
+    let timeoutId: NodeJS.Timeout;
+
+    const typeText = () => {
+      if (charIndex <= fullText.length) {
+        setDisplayedText(fullText.slice(0, charIndex));
+        charIndex++;
+        timeoutId = setTimeout(typeText, 30);
+      } else {
+        setIsTyping(false);
+        // Wait 4 seconds, then restart
+        timeoutId = setTimeout(() => {
+          charIndex = 0;
+          setIsTyping(true);
+          typeText();
+        }, 2000);
+      }
+    };
+
+    typeText();
+
+    return () => clearTimeout(timeoutId);
+  }, []);
+
   return (
-    <section className="relative py-28 sm:py-36">
+    <section className="relative py-24 sm:py-32 overflow-hidden">
       <div className="pointer-events-none absolute inset-0 -z-10 opacity-50">
         <svg className="absolute inset-0 h-full w-full" preserveAspectRatio="none">
           <defs>
@@ -37,42 +49,38 @@ export function Problem() {
         </svg>
       </div>
       <div className="mx-auto max-w-7xl px-6">
-        <SectionHeader
-          eyebrow="The Reality"
-          title={
-            <>
-              Most businesses don't need more marketing.
-              <br />
-              <span className="text-muted-foreground/80">They need more clarity.</span>
-            </>
-          }
-        />
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.6 }}
+          className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-[11px] font-medium uppercase tracking-[0.18em] text-muted-foreground backdrop-blur-md"
+        >
+          <span className="h-1.5 w-1.5 rounded-full bg-highlight shadow-[0_0_8px_var(--highlight)]" />
+          The Reality
+        </motion.div>
 
-        <div className="mt-16 grid grid-cols-1 gap-5 md:grid-cols-3">
-          {items.map((item, i) => (
-            <motion.div
-              key={item.title}
-              initial={{ opacity: 0, y: 26 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.7, delay: i * 0.1 }}
-              className="group relative overflow-hidden rounded-2xl border border-white/[0.07] bg-white/[0.025] p-7 backdrop-blur-xl transition-all hover:-translate-y-1 hover:border-primary/30 hover:bg-white/[0.04]"
-            >
-              <div className="absolute -right-16 -top-16 h-40 w-40 rounded-full bg-primary/0 blur-3xl transition-all group-hover:bg-primary/20" />
-              <div className="relative">
-                <div className="grid h-11 w-11 place-items-center rounded-xl border border-white/10 bg-white/[0.04] text-primary">
-                  <item.icon className="h-5 w-5" />
-                </div>
-                <h3 className="mt-5 text-[19px] font-semibold tracking-[-0.01em] text-white">
-                  {item.title}
-                </h3>
-                <p className="mt-2.5 text-[14px] leading-relaxed text-muted-foreground">
-                  {item.desc}
-                </p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+        <motion.h2
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.5 }}
+          className="mt-8 text-[42px] font-semibold leading-[1.1] tracking-[-0.035em] text-white sm:text-[56px] lg:text-[72px] min-h-[4.5em] sm:min-h-[3.6em] lg:min-h-[3.2em]"
+          style={{ contain: "layout style paint" }}
+        >
+          {displayedText.split("They need more clarity.")[0]}
+          {displayedText.includes("They need more clarity.") && (
+            <span className="text-highlight">They need more clarity.</span>
+          )}
+          {displayedText.split("They need more clarity.")[1]}
+          {isTyping && (
+            <motion.span
+              animate={{ opacity: [1, 0] }}
+              transition={{ duration: 0.8, repeat: Infinity }}
+              className="ml-1 inline-block h-[1.2em] w-[3px] bg-primary"
+            />
+          )}
+        </motion.h2>
       </div>
     </section>
   );

@@ -4,7 +4,7 @@ import { DashboardMock } from "./DashboardMock";
 
 export function Hero() {
   return (
-    <section className="relative isolate overflow-hidden pt-32 pb-24 md:pt-40 md:pb-32">
+    <section className="relative isolate overflow-hidden pt-24 pb-16 md:pt-32 md:pb-24">
       {/* Background layers */}
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute inset-0 grid-bg mask-fade-edges opacity-60" />

@@ -43,14 +43,14 @@ export function Platform() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.9 }}
-            className="absolute inset-x-[5%] top-0 overflow-hidden rounded-3xl border border-white/10 bg-[#0d0d0d]/85 p-6 shadow-[0_60px_120px_-30px_rgba(0,0,0,0.9)] backdrop-blur-2xl"
+            className="absolute inset-x-[5%] top-0 overflow-hidden rounded-3xl border border-border bg-card/85 p-6 shadow-card backdrop-blur-2xl"
           >
-            <div className="flex items-center justify-between border-b border-white/5 pb-4">
+            <div className="flex items-center justify-between border-b border-border/40 pb-4">
               <div className="flex items-center gap-3">
                 <div className="flex gap-1.5">
-                  <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
-                  <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
-                  <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
+                  <span className="h-2.5 w-2.5 rounded-full bg-foreground/15" />
+                  <span className="h-2.5 w-2.5 rounded-full bg-foreground/15" />
+                  <span className="h-2.5 w-2.5 rounded-full bg-foreground/15" />
                 </div>
                 <span className="ml-2 text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
                   Zentrix · Growth Intelligence
@@ -122,11 +122,11 @@ export function Platform() {
                     { l: "Loyalty", v: 34 },
                   ].map((r) => (
                     <div key={r.l}>
-                      <div className="mb-1 flex justify-between text-[10.5px] text-white/70">
+                      <div className="mb-1 flex justify-between text-[10.5px] text-foreground/75">
                         <span>{r.l}</span>
                         <span className="text-muted-foreground">{r.v}%</span>
                       </div>
-                      <div className="h-1 overflow-hidden rounded-full bg-white/5">
+                      <div className="h-1 overflow-hidden rounded-full bg-foreground/5">
                         <div
                           className="h-full rounded-full bg-gradient-to-r from-primary to-highlight"
                           style={{ width: `${r.v}%` }}
@@ -165,7 +165,7 @@ export function Platform() {
           <motion.div
             animate={{ y: [0, -12, 0] }}
             transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute -left-2 bottom-6 hidden w-[220px] overflow-hidden rounded-2xl border border-white/10 bg-[#0d0d0d]/90 p-4 backdrop-blur-2xl shadow-[0_30px_60px_-20px_rgba(0,0,0,0.9)] md:block"
+            className="absolute -left-2 bottom-6 hidden w-[220px] overflow-hidden rounded-2xl border border-border bg-card/90 p-4 backdrop-blur-2xl shadow-card md:block"
           >
             <div className="flex items-center gap-2">
               <div className="grid h-8 w-8 place-items-center rounded-lg bg-highlight/15 text-highlight">
@@ -175,7 +175,7 @@ export function Platform() {
                 <p className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
                   Opportunity
                 </p>
-                <p className="text-[12.5px] font-semibold text-white">+18 new leads</p>
+                <p className="text-[12.5px] font-semibold text-foreground">+18 new leads</p>
               </div>
             </div>
             <div className="mt-3 text-[11px] text-muted-foreground">
@@ -186,13 +186,13 @@ export function Platform() {
           <motion.div
             animate={{ y: [0, 10, 0] }}
             transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}
-            className="absolute -right-2 bottom-20 hidden w-[200px] rounded-2xl border border-white/10 bg-[#0d0d0d]/90 p-4 backdrop-blur-2xl shadow-[0_30px_60px_-20px_rgba(0,0,0,0.9)] md:block"
+            className="absolute -right-2 bottom-20 hidden w-[200px] rounded-2xl border border-border bg-card/90 p-4 backdrop-blur-2xl shadow-card md:block"
           >
             <p className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
               Forecast accuracy
             </p>
-            <p className="mt-1 text-2xl font-semibold text-white">99.2%</p>
-            <div className="mt-2 h-1 overflow-hidden rounded-full bg-white/5">
+            <p className="mt-1 text-2xl font-semibold text-foreground">99.2%</p>
+            <div className="mt-2 h-1 overflow-hidden rounded-full bg-foreground/5">
               <div className="h-full w-[99%] rounded-full bg-gradient-to-r from-primary to-highlight" />
             </div>
           </motion.div>
@@ -219,11 +219,11 @@ function Panel({
 }) {
   return (
     <div
-      className={`rounded-2xl border border-white/[0.07] bg-white/[0.025] p-4 backdrop-blur-xl ${className}`}
+      className={`rounded-2xl border border-border bg-card/40 p-4 backdrop-blur-xl ${className}`}
     >
       <div className="mb-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="grid h-7 w-7 place-items-center rounded-md border border-white/10 bg-white/[0.03] text-primary">
+          <div className="grid h-7 w-7 place-items-center rounded-md border border-border bg-foreground/[0.03] text-primary">
             <Icon className="h-3.5 w-3.5" />
           </div>
           <span className="text-[10.5px] uppercase tracking-[0.16em] text-muted-foreground">
@@ -231,7 +231,7 @@ function Panel({
           </span>
         </div>
         <div className="text-right">
-          <p className="text-[14px] font-semibold text-white">{value}</p>
+          <p className="text-[14px] font-semibold text-foreground">{value}</p>
           <p className="text-[10px] text-highlight">{delta}</p>
         </div>
       </div>

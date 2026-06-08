@@ -33,16 +33,16 @@ const caps = [
 
 // tiny fan so back cards peek out behind front card
 const FAN = [
-  { dx:  0, dy:  0, r:  0,   z: 4 },
-  { dx:  6, dy:  6, r:  2.2, z: 3 },
+  { dx: 0, dy: 0, r: 0, z: 4 },
+  { dx: 6, dy: 6, r: 2.2, z: 3 },
   { dx: -5, dy: 11, r: -1.8, z: 2 },
-  { dx:  8, dy: 16, r:  2.8, z: 1 },
+  { dx: 8, dy: 16, r: 2.8, z: 1 },
 ];
 
 const CARD_BASE_STYLE = [
   "position:absolute",
-  "background:#0f1610",
-  "border:1px solid rgba(255,255,255,0.09)",
+  "background:var(--card)",
+  "border:1px solid var(--border)",
   "border-radius:16px",
   "padding:28px",
   "overflow:hidden",
@@ -55,49 +55,59 @@ const GAP = 20;
 
 export function Capabilities() {
   const sectionRef = useRef<HTMLElement>(null);
-  const stageRef   = useRef<HTMLDivElement>(null);
-  const dotsRef    = useRef<HTMLDivElement>(null);
-  const cardRefs   = useRef<(HTMLDivElement | null)[]>([]);
-  const timers     = useRef<ReturnType<typeof setTimeout>[]>([]);
-  const hasPlayed  = useRef(false);
+  const stageRef = useRef<HTMLDivElement>(null);
+  const dotsRef = useRef<HTMLDivElement>(null);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
 
-  const clear = () => { timers.current.forEach(clearTimeout); timers.current = []; };
-  const after = (ms: number, fn: () => void) => { timers.current.push(setTimeout(fn, ms)); };
+  const clear = () => {
+    timers.current.forEach(clearTimeout);
+    timers.current = [];
+  };
+  const after = (ms: number, fn: () => void) => {
+    timers.current.push(setTimeout(fn, ms));
+  };
 
   const runSequence = useCallback(() => {
     clear();
 
     const stage = stageRef.current;
-    const dots  = dotsRef.current;
+    const dots = dotsRef.current;
     const cards = cardRefs.current.filter(Boolean) as HTMLDivElement[];
     if (!stage || cards.length < 4) return;
 
-    const W     = stage.offsetWidth;
+    const W = stage.offsetWidth;
     const cardW = (W - GAP) / 2;
 
-    // ── Step 1: lay cards out naturally (full width, stacked) to get real height ──
-    cards.forEach(c => {
-      c.style.cssText = `${CARD_BASE_STYLE};position:relative;width:100%;opacity:0;transition:none;`;
+    // ── Step 1: lay cards out naturally (at final card width) to get real height ──
+    cards.forEach((c) => {
+      c.style.cssText = `${CARD_BASE_STYLE};position:relative;width:${cardW}px;opacity:0;transition:none;`;
     });
 
     // read height after browser has laid out content
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        const cardH = cards[0].offsetHeight;
-        const totalH = cardH * 2 + GAP;
+        const h0 = cards[0].offsetHeight;
+        const h1 = cards[1].offsetHeight;
+        const h2 = cards[2].offsetHeight;
+        const h3 = cards[3].offsetHeight;
+
+        const row1H = Math.max(h0, h1);
+        const row2H = Math.max(h2, h3);
+        const totalH = row1H + row2H + GAP;
 
         stage.style.height = `${totalH}px`;
 
         // center of the stage
         const cx = W / 2 - cardW / 2;
-        const cy = totalH / 2 - cardH / 2;
+        const cy = totalH / 2 - h0 / 2;
 
         // final absolute positions for each card in 2×2 grid
         const finals = [
-          { l: 0,           t: 0 },
+          { l: 0, t: 0 },
           { l: cardW + GAP, t: 0 },
-          { l: 0,           t: cardH + GAP },
-          { l: cardW + GAP, t: cardH + GAP },
+          { l: 0, t: row1H + GAP },
+          { l: cardW + GAP, t: row1H + GAP },
         ];
 
         // ── Step 2: place all at center, stacked, invisible, no transition ──
@@ -127,13 +137,14 @@ export function Capabilities() {
 
         // ── Step 4: bounce front card ──
         after(1000, () => {
-          cards[0].style.transition = "transform 0.26s cubic-bezier(.34,1.56,.64,1), top 0.26s cubic-bezier(.34,1.56,.64,1)";
-          cards[0].style.top       = `${cy + FAN[0].dy - 12}px`;
+          cards[0].style.transition =
+            "transform 0.26s cubic-bezier(.34,1.56,.64,1), top 0.26s cubic-bezier(.34,1.56,.64,1)";
+          cards[0].style.top = `${cy + FAN[0].dy - 12}px`;
           cards[0].style.transform = "rotate(0deg) scale(1.035)";
         });
         after(1270, () => {
           cards[0].style.transition = "transform 0.22s ease, top 0.22s ease";
-          cards[0].style.top       = `${cy + FAN[0].dy}px`;
+          cards[0].style.top = `${cy + FAN[0].dy}px`;
           cards[0].style.transform = "rotate(0deg) scale(1)";
         });
 
@@ -150,12 +161,17 @@ export function Capabilities() {
               "border-color 0.3s",
               "box-shadow 0.3s",
             ].join(",");
-            c.style.left      = `${finals[i].l}px`;
-            c.style.top       = `${finals[i].t}px`;
+            c.style.left = `${finals[i].l}px`;
+            c.style.top = `${finals[i].t}px`;
             c.style.transform = "rotate(0deg) scale(1)";
-            c.style.zIndex    = "1";
-            c.style.width     = `${cardW}px`;
+            c.style.zIndex = "1";
+            c.style.width = `${cardW}px`;
           });
+        });
+
+        // ── Step 6: Loop after delay (e.g. 6 seconds after final state: 1580 + 6000 = 7580ms) ──
+        after(7580, () => {
+          runSequence();
         });
       });
     });
@@ -164,19 +180,23 @@ export function Capabilities() {
   useEffect(() => {
     const obs = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && !hasPlayed.current) {
-          hasPlayed.current = true;
+        if (entry.isIntersecting) {
           runSequence();
+        } else {
+          clear();
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0.2 },
     );
     if (sectionRef.current) obs.observe(sectionRef.current);
-    return () => { obs.disconnect(); clear(); };
+    return () => {
+      obs.disconnect();
+      clear();
+    };
   }, [runSequence]);
 
   return (
-    <section ref={sectionRef} id="solutions" className="relative py-28 sm:py-36">
+    <section ref={sectionRef} id="solutions" className="relative py-16 sm:py-20">
       <div className="mx-auto max-w-7xl px-6">
         <SectionHeader
           eyebrow="Capabilities"
@@ -195,11 +215,13 @@ export function Capabilities() {
           {caps.map((cap, i) => (
             <div
               key={cap.title}
-              ref={el => { cardRefs.current[i] = el; }}
+              ref={(el) => {
+                cardRefs.current[i] = el;
+              }}
               style={{
                 position: "absolute",
-                background: "#0f1610",
-                border: "1px solid rgba(255,255,255,0.09)",
+                background: "var(--card)",
+                border: "1px solid var(--border)",
                 borderRadius: 16,
                 padding: "28px",
                 overflow: "hidden",
@@ -207,23 +229,28 @@ export function Capabilities() {
                 boxSizing: "border-box",
                 transition: "border-color 0.3s, box-shadow 0.3s",
               }}
-              onMouseEnter={e => {
+              onMouseEnter={(e) => {
                 const el = e.currentTarget as HTMLDivElement;
                 el.style.borderColor = "rgba(126,217,87,0.42)";
-                el.style.boxShadow   = "0 0 0 1px rgba(126,217,87,0.08), 0 0 32px rgba(126,217,87,0.08)";
+                el.style.boxShadow =
+                  "0 0 0 1px rgba(126,217,87,0.08), 0 0 32px rgba(126,217,87,0.08)";
               }}
-              onMouseLeave={e => {
+              onMouseLeave={(e) => {
                 const el = e.currentTarget as HTMLDivElement;
-                el.style.borderColor = "rgba(255,255,255,0.09)";
-                el.style.boxShadow   = "none";
+                el.style.borderColor = "var(--border)";
+                el.style.boxShadow = "none";
               }}
             >
               {/* glow blob — toggled via JS in onMouseEnter/Leave on parent */}
               <div
                 className="cap-glow"
                 style={{
-                  position: "absolute", top: -56, right: -56,
-                  width: 176, height: 176, borderRadius: "50%",
+                  position: "absolute",
+                  top: -56,
+                  right: -56,
+                  width: 176,
+                  height: 176,
+                  borderRadius: "50%",
                   background: "rgba(126,217,87,0.09)",
                   filter: "blur(36px)",
                   opacity: 0,
@@ -231,53 +258,86 @@ export function Capabilities() {
                   pointerEvents: "none",
                 }}
               />
-              <div style={{
-                position: "absolute", bottom: 0, left: 0, right: 0, height: 1,
-                background: "linear-gradient(90deg,transparent,rgba(126,217,87,0.28),transparent)",
-                opacity: 0, transition: "opacity 0.3s", pointerEvents: "none",
-              }} className="cap-shine" />
+              <div
+                style={{
+                  position: "absolute",
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  height: 1,
+                  background:
+                    "linear-gradient(90deg,transparent,rgba(126,217,87,0.28),transparent)",
+                  opacity: 0,
+                  transition: "opacity 0.3s",
+                  pointerEvents: "none",
+                }}
+                className="cap-shine"
+              />
 
               {/* card content */}
-              <div style={{ position: "relative", display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
-                <div style={{
-                  width: 48, height: 48, borderRadius: 12, flexShrink: 0,
-                  border: "1px solid rgba(255,255,255,0.1)",
-                  background: "rgba(255,255,255,0.04)",
-                  display: "grid", placeItems: "center",
-                }}>
+              <div
+                style={{
+                  position: "relative",
+                  display: "flex",
+                  alignItems: "flex-start",
+                  justifyContent: "space-between",
+                }}
+              >
+                <div
+                  style={{
+                    width: 48,
+                    height: 48,
+                    borderRadius: 12,
+                    flexShrink: 0,
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    background: "rgba(255,255,255,0.04)",
+                    display: "grid",
+                    placeItems: "center",
+                  }}
+                >
                   <cap.icon size={20} strokeWidth={1.8} color="#7ed957" />
                 </div>
-                <span style={{
-                  border: "1px solid rgba(255,255,255,0.1)",
-                  borderRadius: 100,
-                  background: "rgba(255,255,255,0.03)",
-                  padding: "2px 10px",
-                  fontSize: 10, fontWeight: 500,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.16em",
-                  color: "rgba(255,255,255,0.4)",
-                }}>
+                <span
+                  style={{
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    borderRadius: 100,
+                    background: "rgba(255,255,255,0.03)",
+                    padding: "2px 10px",
+                    fontSize: 10,
+                    fontWeight: 500,
+                    textTransform: "uppercase",
+                    letterSpacing: "0.16em",
+                    color: "rgba(255,255,255,0.4)",
+                  }}
+                >
                   {cap.tag}
                 </span>
               </div>
 
-              <h3 style={{
-                position: "relative",
-                marginTop: 24, marginBottom: 0,
-                fontSize: 20, fontWeight: 600,
-                letterSpacing: "-0.015em",
-                lineHeight: 1.25,
-                color: "#ffffff",
-                fontFamily: "var(--font-syne, sans-serif)",
-              }}>
+              <h3
+                style={{
+                  position: "relative",
+                  marginTop: 24,
+                  marginBottom: 0,
+                  fontSize: 20,
+                  fontWeight: 600,
+                  letterSpacing: "-0.015em",
+                  lineHeight: 1.25,
+                  color: "var(--foreground)",
+                  fontFamily: "var(--font-syne, sans-serif)",
+                }}
+              >
                 {cap.title}
               </h3>
-              <p style={{
-                position: "relative",
-                marginTop: 12,
-                fontSize: 14, lineHeight: 1.65,
-                color: "rgba(255,255,255,0.48)",
-              }}>
+              <p
+                style={{
+                  position: "relative",
+                  marginTop: 12,
+                  fontSize: 14,
+                  lineHeight: 1.65,
+                  color: "var(--muted-foreground)",
+                }}
+              >
                 {cap.desc}
               </p>
             </div>
@@ -287,42 +347,26 @@ export function Capabilities() {
         {/* depth dots */}
         <div
           ref={dotsRef}
-          style={{ display: "flex", justifyContent: "center", gap: 5, marginTop: 16, opacity: 0, transition: "opacity 0.4s" }}
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            gap: 5,
+            marginTop: 16,
+            opacity: 0,
+            transition: "opacity 0.4s",
+          }}
         >
-          {[0,1,2,3].map(i => (
-            <div key={i} style={{
-              height: 4,
-              width: i === 0 ? 14 : 4,
-              borderRadius: 100,
-              background: i === 0 ? "#a8f075" : "rgba(126,217,87,0.25)",
-            }} />
+          {[0, 1, 2, 3].map((i) => (
+            <div
+              key={i}
+              style={{
+                height: 4,
+                width: i === 0 ? 14 : 4,
+                borderRadius: 100,
+                background: i === 0 ? "#a8f075" : "rgba(126,217,87,0.25)",
+              }}
+            />
           ))}
-        </div>
-
-        {/* replay button */}
-        <div style={{ display: "flex", justifyContent: "center", marginTop: 20 }}>
-          <button
-            onClick={() => { hasPlayed.current = false; runSequence(); }}
-            style={{
-              background: "rgba(126,217,87,0.07)",
-              border: "1px solid rgba(126,217,87,0.22)",
-              borderRadius: 100,
-              padding: "8px 20px",
-              color: "#a8f075",
-              fontSize: 12,
-              letterSpacing: "0.08em",
-              cursor: "pointer",
-              fontFamily: "inherit",
-              display: "flex",
-              alignItems: "center",
-              gap: 6,
-              transition: "background 0.2s",
-            }}
-            onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(126,217,87,0.14)"; }}
-            onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(126,217,87,0.07)"; }}
-          >
-            ↺ Replay animation
-          </button>
         </div>
       </div>
     </section>

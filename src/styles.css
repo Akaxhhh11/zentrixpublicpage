@@ -47,9 +47,9 @@
   --radius: 0.875rem;
 
   /* Zentrix dark palette */
-  --background: oklch(0.12 0 0);                /* #070707 */
-  --surface: oklch(0.16 0 0);                   /* #0D0D0D */
-  --surface-elevated: oklch(0.20 0 0);
+  --background: oklch(0.12 0 0); /* #070707 */
+  --surface: oklch(0.16 0 0); /* #0D0D0D */
+  --surface-elevated: oklch(0.2 0 0);
   --foreground: oklch(1 0 0);
   --card: oklch(0.16 0 0);
   --card-foreground: oklch(1 0 0);
@@ -57,14 +57,14 @@
   --popover-foreground: oklch(1 0 0);
 
   /* Sage / mint accents */
-  --primary: oklch(0.82 0.07 145);              /* #A7C4A0 */
+  --primary: oklch(0.82 0.07 145); /* #A7C4A0 */
   --primary-foreground: oklch(0.15 0 0);
-  --highlight: oklch(0.92 0.12 140);            /* #C8F5B0 */
+  --highlight: oklch(0.92 0.12 140); /* #C8F5B0 */
 
   --secondary: oklch(0.22 0 0);
   --secondary-foreground: oklch(1 0 0);
-  --muted: oklch(0.20 0 0);
-  --muted-foreground: oklch(0.80 0.005 270);    /* brighter for legibility */
+  --muted: oklch(0.2 0 0);
+  --muted-foreground: oklch(0.8 0.005 270); /* brighter for legibility */
   --accent: oklch(0.82 0.07 145);
   --accent-foreground: oklch(0.15 0 0);
   --destructive: oklch(0.65 0.22 25);
@@ -74,8 +74,17 @@
   --input: oklch(1 0 0 / 10%);
   --ring: oklch(0.82 0.07 145 / 60%);
 
-  --gradient-radial-glow: radial-gradient(ellipse at top, color-mix(in oklab, var(--primary) 18%, transparent), transparent 60%);
-  --gradient-border: linear-gradient(135deg, color-mix(in oklab, var(--highlight) 55%, transparent), color-mix(in oklab, var(--primary) 10%, transparent) 50%, transparent);
+  --gradient-radial-glow: radial-gradient(
+    ellipse at top,
+    color-mix(in oklab, var(--primary) 18%, transparent),
+    transparent 60%
+  );
+  --gradient-border: linear-gradient(
+    135deg,
+    color-mix(in oklab, var(--highlight) 55%, transparent),
+    color-mix(in oklab, var(--primary) 10%, transparent) 50%,
+    transparent
+  );
   --gradient-text: linear-gradient(180deg, #ffffff 0%, #c8f5b0 120%);
 }
 
@@ -95,7 +104,7 @@
   --popover: oklch(0.99 0 0);
   --popover-foreground: oklch(0.18 0 0);
 
-  --primary: oklch(0.55 0.10 145);
+  --primary: oklch(0.55 0.1 145);
   --primary-foreground: oklch(0.99 0 0);
   --highlight: oklch(0.62 0.14 140);
 
@@ -103,32 +112,50 @@
   --secondary-foreground: oklch(0.18 0 0);
   --muted: oklch(0.94 0 0);
   --muted-foreground: oklch(0.42 0.005 270);
-  --accent: oklch(0.55 0.10 145);
+  --accent: oklch(0.55 0.1 145);
   --accent-foreground: oklch(0.99 0 0);
 
   --border: oklch(0 0 0 / 10%);
   --input: oklch(0 0 0 / 12%);
-  --ring: oklch(0.55 0.10 145 / 50%);
+  --ring: oklch(0.55 0.1 145 / 50%);
 
-  --gradient-radial-glow: radial-gradient(ellipse at top, color-mix(in oklab, var(--primary) 14%, transparent), transparent 60%);
+  --gradient-radial-glow: radial-gradient(
+    ellipse at top,
+    color-mix(in oklab, var(--primary) 14%, transparent),
+    transparent 60%
+  );
   --gradient-text: linear-gradient(180deg, #0a0a0a 0%, #2d5a3d 120%);
   color-scheme: light;
 }
 
 /* Light-mode overrides for dark-only utility classes used across sections */
-.light .text-white { color: oklch(0.18 0 0); }
-.light [class*="text-white\\/"] { color: oklch(0.32 0 0); }
-.light .bg-background\/70 { background-color: rgba(255, 255, 255, 0.75); }
+.light .text-white {
+  color: oklch(0.18 0 0);
+}
+.light [class*="text-white\\/"] {
+  color: oklch(0.32 0 0);
+}
+.light .bg-background\/70 {
+  background-color: rgba(255, 255, 255, 0.75);
+}
 .light .bg-white\/\[0\.03\],
 .light .bg-white\/\[0\.04\],
 .light .bg-white\/\[0\.06\],
-.light .bg-white\/\[0\.07\] { background-color: rgba(0, 0, 0, 0.035); }
+.light .bg-white\/\[0\.07\] {
+  background-color: rgba(0, 0, 0, 0.035);
+}
 .light .border-white\/\[0\.05\],
 .light .border-white\/\[0\.06\],
 .light .border-white\/\[0\.07\],
-.light .border-white\/10 { border-color: rgba(0, 0, 0, 0.08); }
-.light .from-white\/\[0\.04\] { --tw-gradient-from: rgba(0,0,0,0.04) var(--tw-gradient-from-position); }
-.light .to-white\/\[0\.01\] { --tw-gradient-to: rgba(0,0,0,0.015) var(--tw-gradient-to-position); }
+.light .border-white\/10 {
+  border-color: rgba(0, 0, 0, 0.08);
+}
+.light .from-white\/\[0\.04\] {
+  --tw-gradient-from: rgba(0, 0, 0, 0.04) var(--tw-gradient-from-position);
+}
+.light .to-white\/\[0\.01\] {
+  --tw-gradient-to: rgba(0, 0, 0, 0.015) var(--tw-gradient-to-position);
+}
 .light .glass {
   background: rgba(0, 0, 0, 0.03);
   border-color: rgba(0, 0, 0, 0.08);
@@ -215,9 +242,11 @@
     border-radius: inherit;
     padding: 1px;
     background: var(--gradient-border);
-    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
     -webkit-mask-composite: xor;
-            mask-composite: exclude;
+    mask-composite: exclude;
     pointer-events: none;
   }
 
@@ -230,7 +259,7 @@
 
   .mask-fade-edges {
     -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
-            mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+    mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
   }
 
   .noise::after {
@@ -244,20 +273,40 @@
   }
 
   @keyframes float-slow {
-    0%, 100% { transform: translateY(0) translateX(0); }
-    50% { transform: translateY(-14px) translateX(4px); }
+    0%,
+    100% {
+      transform: translateY(0) translateX(0);
+    }
+    50% {
+      transform: translateY(-14px) translateX(4px);
+    }
   }
-  .animate-float-slow { animation: float-slow 9s ease-in-out infinite; }
+  .animate-float-slow {
+    animation: float-slow 9s ease-in-out infinite;
+  }
 
   @keyframes pulse-glow {
-    0%, 100% { opacity: 0.6; }
-    50% { opacity: 1; }
+    0%,
+    100% {
+      opacity: 0.6;
+    }
+    50% {
+      opacity: 1;
+    }
   }
-  .animate-pulse-glow { animation: pulse-glow 4s ease-in-out infinite; }
+  .animate-pulse-glow {
+    animation: pulse-glow 4s ease-in-out infinite;
+  }
 
   @keyframes beam {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
   }
-  .animate-beam { animation: beam 8s linear infinite; }
+  .animate-beam {
+    animation: beam 8s linear infinite;
+  }
 }
