@@ -127,7 +127,7 @@ export function CaseStudies() {
   };
 
   return (
-    <section id="cases" className="relative py-28 sm:py-36">
+    <section id="cases" className="relative py-16 sm:py-20">
       <div className="mx-auto max-w-7xl px-6">
         <SectionHeader
           eyebrow="Case Study"
@@ -148,9 +148,8 @@ export function CaseStudies() {
               <button
                 key={item.id}
                 onClick={() => handleTabChange(i)}
-                className={`relative px-5 py-2 text-[13px] font-semibold rounded-full transition-colors cursor-pointer ${
-                  activeTab === i ? "text-black" : "text-white/60 hover:text-white"
-                }`}
+                className={`relative px-5 py-2 text-[13px] font-semibold rounded-full transition-colors cursor-pointer ${activeTab === i ? "text-black" : "text-white/60 hover:text-white"
+                  }`}
               >
                 {activeTab === i && (
                   <motion.div

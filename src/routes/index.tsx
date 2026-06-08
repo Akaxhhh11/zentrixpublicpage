@@ -3,11 +3,8 @@ import { ThemeProvider } from "@/components/zentrix/ThemeProvider";
 import { Nav } from "@/components/zentrix/Nav";
 import { Hero } from "@/components/zentrix/Hero";
 import { Problem } from "@/components/zentrix/Problem";
-import { Philosophy } from "@/components/zentrix/Philosophy";
 import { Services } from "@/components/zentrix/Services";
 import { Capabilities } from "@/components/zentrix/Capabilities";
-import { Platform } from "@/components/zentrix/Platform";
-import { Results } from "@/components/zentrix/Results";
 import { Process } from "@/components/zentrix/Process";
 import { CaseStudies } from "@/components/zentrix/CaseStudies";
 
@@ -44,11 +41,8 @@ function Index() {
         <Nav />
         <Hero />
         <Problem />
-        <Philosophy />
         <Services />
         <Capabilities />
-        <Platform />
-        <Results />
         <Process />
         <CaseStudies />
 

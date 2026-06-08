@@ -4,8 +4,8 @@ import { Link } from "@tanstack/react-router";
 import { Logo } from "./Logo";
 
 const links = [
-  { label: "Solutions", href: "#solutions" },
   { label: "Services", href: "#services" },
+  { label: "Solutions", href: "#solutions" },
   { label: "Process", href: "#process" },
   { label: "Case Studies", href: "#cases" },
   { label: "Contact", href: "#contact" },
@@ -21,11 +21,10 @@ export function Nav() {
       initial={{ y: -30, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: [0.2, 0.8, 0.2, 1] }}
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
-        scrolled
+      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${scrolled
           ? "border-b border-border backdrop-blur-xl bg-background/70"
           : "border-b border-transparent"
-      }`}
+        }`}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
         <Link to="/" className="flex items-center gap-3">

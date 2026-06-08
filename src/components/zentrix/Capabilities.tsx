@@ -196,7 +196,7 @@ export function Capabilities() {
   }, [runSequence]);
 
   return (
-    <section ref={sectionRef} id="solutions" className="relative py-28 sm:py-36">
+    <section ref={sectionRef} id="solutions" className="relative py-16 sm:py-20">
       <div className="mx-auto max-w-7xl px-6">
         <SectionHeader
           eyebrow="Capabilities"

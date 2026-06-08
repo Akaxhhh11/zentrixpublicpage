@@ -69,7 +69,7 @@ const cardVariants = {
 
 export function Services() {
   return (
-    <section id="services" className="relative py-28 sm:py-36">
+    <section id="services" className="relative py-16 sm:py-20">
       {/* Background glow styling */}
       <div className="pointer-events-none absolute inset-0 -z-10 opacity-40">
         <div className="absolute right-1/4 top-1/4 h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle,rgba(200,245,176,0.12),transparent_70%)] blur-3xl" />

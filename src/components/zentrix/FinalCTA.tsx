@@ -592,7 +592,7 @@ export function FinalCTA() {
 
   return (
     <>
-      <section id="contact" className="relative overflow-hidden py-32 sm:py-44">
+      <section id="contact" className="relative overflow-hidden py-20 sm:py-24">
         <div className="pointer-events-none absolute inset-0 -z-10">
           <motion.div
             animate={{ scale: [1, 1.08, 1], opacity: [0.7, 1, 0.7] }}
