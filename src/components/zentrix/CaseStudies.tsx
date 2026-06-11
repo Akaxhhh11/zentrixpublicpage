@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { SectionHeader } from "./SectionHeader";
+import { useBooking } from "./BookingProvider";
 
 const caseStudies = [
   {
@@ -59,6 +60,7 @@ const caseStudies = [
     },
     ctaEmailSubject: "Let's build my success story",
     ctaLabel: "Let's build your success story",
+    ctaService: "Performance Marketing",
   },
   {
     id: "nike",
@@ -105,6 +107,7 @@ const caseStudies = [
     },
     ctaEmailSubject: "Book a brand strategy session with Zentrix",
     ctaLabel: "Build your brand authority",
+    ctaService: "Brand Identity",
   },
 ];
 
@@ -148,8 +151,9 @@ export function CaseStudies() {
               <button
                 key={item.id}
                 onClick={() => handleTabChange(i)}
-                className={`relative px-5 py-2 text-[13px] font-semibold rounded-full transition-colors cursor-pointer ${activeTab === i ? "text-black" : "text-white/60 hover:text-white"
-                  }`}
+                className={`relative px-5 py-2 text-[13px] font-semibold rounded-full transition-colors cursor-pointer ${
+                  activeTab === i ? "text-black" : "text-white/60 hover:text-white"
+                }`}
               >
                 {activeTab === i && (
                   <motion.div
@@ -249,15 +253,13 @@ export function CaseStudies() {
               <p className="mt-2 text-[14px] font-semibold text-white">{cs.takeaway.sub}</p>
             </div>
 
-            <a
-              href={`mailto:contactzentrixms@gmail.com?subject=${encodeURIComponent(
-                cs.ctaEmailSubject,
-              )}`}
-              className="group inline-flex items-center gap-2 rounded-full border border-highlight/30 bg-highlight/10 px-5 py-3 text-[13.5px] font-semibold text-highlight transition-all hover:bg-highlight/20"
+            <button
+              onClick={() => openBooking(cs.ctaService)}
+              className="group inline-flex items-center gap-2 rounded-full border border-highlight/30 bg-highlight/10 px-5 py-3 text-[13.5px] font-semibold text-highlight transition-all hover:bg-highlight/20 cursor-pointer"
             >
               {cs.ctaLabel}
               <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-            </a>
+            </button>
           </div>
         </motion.div>
       </div>
