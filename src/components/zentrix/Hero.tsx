@@ -1,8 +1,11 @@
 import { motion } from "framer-motion";
 import { ArrowUpRight, Sparkles } from "lucide-react";
 import { DashboardMock } from "./DashboardMock";
+import { useBooking } from "./BookingProvider";
 
 export function Hero() {
+  const { openBooking } = useBooking();
+
   return (
     <section className="relative isolate overflow-hidden pt-24 pb-16 md:pt-32 md:pb-24">
       {/* Background layers */}
@@ -56,13 +59,13 @@ export function Hero() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="mt-9 flex flex-wrap items-center gap-3"
           >
-            <a
-              href="mailto:contactzentrixms@gmail.com?subject=Book%20a%20Strategy%20Call%20with%20Zentrix&body=Hi%20Zentrix%20team%2C%0A%0AI%27d%20like%20to%20book%20a%20strategy%20call.%0A%0AName%3A%0ACompany%3A%0AWhat%20I%20need%20help%20with%3A%0A%0AThanks!"
-              className="group relative inline-flex h-11 items-center gap-2 overflow-hidden rounded-full bg-gradient-to-b from-highlight to-primary px-5 text-[13.5px] font-semibold text-black shadow-[0_0_40px_-8px_var(--highlight)] transition-transform hover:-translate-y-[1px]"
+            <button
+              onClick={() => openBooking()}
+              className="group relative inline-flex h-11 items-center gap-2 overflow-hidden rounded-full bg-gradient-to-b from-highlight to-primary px-5 text-[13.5px] font-semibold text-black shadow-[0_0_40px_-8px_var(--highlight)] transition-transform hover:-translate-y-[1px] cursor-pointer"
             >
               Book Strategy Call
               <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </a>
+            </button>
             <a
               href="#solutions"
               className="inline-flex h-11 items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-5 text-[13.5px] font-medium text-white backdrop-blur-md transition-all hover:border-white/20 hover:bg-white/[0.06]"

@@ -53,14 +53,16 @@ export function Process() {
                 <button
                   key={s.id}
                   onClick={() => setActive(i)}
-                  className={`group flex w-full items-start gap-5 rounded-2xl border p-5 text-left transition-all ${active === i
+                  className={`group flex w-full items-start gap-5 rounded-2xl border p-5 text-left transition-all ${
+                    active === i
                       ? "border-primary/40 bg-white/[0.04]"
                       : "border-white/[0.06] bg-white/[0.015] hover:border-white/15"
-                    }`}
+                  }`}
                 >
                   <span
-                    className={`mt-0.5 text-[12px] font-mono tracking-wider transition-colors ${active === i ? "text-highlight" : "text-muted-foreground"
-                      }`}
+                    className={`mt-0.5 text-[12px] font-mono tracking-wider transition-colors ${
+                      active === i ? "text-highlight" : "text-muted-foreground"
+                    }`}
                   >
                     {s.id}
                   </span>
@@ -71,10 +73,11 @@ export function Process() {
                     </p>
                   </div>
                   <span
-                    className={`mt-1.5 h-1.5 w-1.5 rounded-full transition-all ${active === i
+                    className={`mt-1.5 h-1.5 w-1.5 rounded-full transition-all ${
+                      active === i
                         ? "bg-highlight shadow-[0_0_10px_var(--highlight)]"
                         : "bg-white/15"
-                      }`}
+                    }`}
                   />
                 </button>
               ))}
@@ -124,10 +127,11 @@ export function Process() {
                   {steps.map((_, i) => (
                     <span
                       key={i}
-                      className={`h-1 rounded-full transition-all ${i === active
+                      className={`h-1 rounded-full transition-all ${
+                        i === active
                           ? "w-10 bg-gradient-to-r from-primary to-highlight"
                           : "w-6 bg-white/10"
-                        }`}
+                      }`}
                     />
                   ))}
                 </div>
